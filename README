@@ -7,11 +7,3 @@ This programs converts pbf files back to osm based XML files. At the time of wri
 - protobuf-c <http://code.google.com/p/protobuf-c/>
 
 Additionally zlib and bzip2 are required.
-
-
-Git Submodules
-==============
-To prevent bundling OSM-Binary we use a git submodule. To fetch the submodule
-
-git submodule init
-git submodule update
