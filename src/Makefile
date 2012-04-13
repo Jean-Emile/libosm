@@ -23,7 +23,7 @@ LIB_FILES=libosm.so
 #CC_FLAGS=-Wall -g -pg
 CC_FLAGS=-Wall -g -O2
 LD_FLAGS=-lm -lprotobuf-c -lz
-
+#CC=arm-linux-gnueabi-gcc
 
 #%.o: %.c $(SRC_FILES) proto_c_gen
 .c.o: $(SRC_FILES) proto_c_gen

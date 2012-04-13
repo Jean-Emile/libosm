@@ -1,0 +1,85 @@
+Index: common.cc
+===================================================================
+--- common.cc	(revision 63484)
++++ common.cc	(working copy)
+@@ -44,8 +44,6 @@
+ #define snprintf _snprintf    // see comment in strutil.cc
+ #elif defined(HAVE_PTHREAD)
+ #include <pthread.h>
+-#else
+-#error "No suitable threading library available."
+ #endif
+ 
+ namespace google {
+@@ -313,6 +311,27 @@
+   // TODO(kenton):  Maybe keep track of locking thread ID like with WIN32?
+ }
+ 
++#else
++
++struct Mutex::Internal {
++};
++
++Mutex::Mutex()
++  : mInternal(new Internal) {
++}
++
++Mutex::~Mutex() {
++}
++
++void Mutex::Lock() {
++}
++
++void Mutex::Unlock() {
++}
++
++void Mutex::AssertHeld() {
++}
++
+ #endif
+ 
+ // ===================================================================
+Index: once.h
+===================================================================
+--- once.h	(revision 63484)
++++ once.h	(working copy)
+@@ -73,10 +73,13 @@
+ #define GOOGLE_PROTOBUF_STUBS_ONCE_H__
+ 
+ #include <google/protobuf/stubs/common.h>
++#include "config.h"
+ 
+ #ifndef _WIN32
++#ifdef HAVE_PTHREAD
+ #include <pthread.h>
+ #endif
++#endif
+ 
+ namespace google {
+ namespace protobuf {
+@@ -104,7 +107,7 @@
+   }
+ }
+ 
+-#else
++#elif defined(HAVE_PTHREAD)
+ 
+ typedef pthread_once_t ProtobufOnceType;
+ 
+@@ -115,6 +118,16 @@
+   pthread_once(once, init_func);
+ }
+ 
++#else
++
++typedef int ProtobufOnceType;
++
++#define GOOGLE_PROTOBUF_DECLARE_ONCE(NAME)                    \
++  int NAME = 0
++
++inline void GoogleOnceInit(ProtobufOnceType* once, void (*init_func)()) {
++}
++
+ #endif
+ 
+ }  // namespace protobuf
