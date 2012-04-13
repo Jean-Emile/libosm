@@ -1,0 +1,12 @@
+
+Installation:
+=============
+Debian sid:
+  # apt-get install libprotobuf-c0-dev protobuf-c-compiler libprotobuf6
+  $ git clone http://github.com/scrosby/OSM-binary.git
+  $ vi Makefile 
+    ... adjust the OSM_BINARY_PATH to your local directory
+  $ make
+It will probably also work with squeeze's libprotobuf-c0, but that's
+untested
+
